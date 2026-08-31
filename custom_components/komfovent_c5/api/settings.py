@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import logging
 from collections.abc import Iterator
 from datetime import datetime
 from ipaddress import IPv4Address
@@ -19,6 +20,8 @@ __all__ = [
     "Settings",
     "SettingsState",
 ]
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FlowUnits(enum.IntEnum):
@@ -79,6 +82,16 @@ class Language(enum.IntEnum):
     GERMAN = 4
     # not mentioned in manual either, observed on a real device (C5, DK)
     DANISH = 10
+
+    @classmethod
+    def _missing_(cls, value: object):
+        _LOGGER.warning(
+            "unknown language value %r, falling back to %s; "
+            "please report this so it can be added",
+            value,
+            cls.ENGLISH.name,
+        )
+        return cls.ENGLISH
 
     @classmethod
     def consume_from_registers(cls, registers: Iterator[int]):
