@@ -77,6 +77,8 @@ class Language(enum.IntEnum):
     POLISH = 3
     # not mentioned in manual, but definitely there!
     GERMAN = 4
+    # not mentioned in manual either, observed on a real device (C5, DK)
+    DANISH = 10
 
     @classmethod
     def consume_from_registers(cls, registers: Iterator[int]):
